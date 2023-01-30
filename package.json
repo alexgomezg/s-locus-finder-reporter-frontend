@@ -1,0 +1,59 @@
+{
+  "name": "@sing-group/s-locus-finder-reporter-frontend",
+  "version": "1.0.0-alpha.23",
+  "description": "A frontend application for S-Locus Finder reports.",
+  "author": {
+    "name": "Alex Gómez González",
+    "email": "alexgomezpadrenda@gmail.com"
+  },
+  "contributors": [
+    "Miguel Reboiro-Jato",
+    "Hugo López-Fernández",
+    "Jorge Vieira",
+    "Cristina Vieira"
+  ],
+  "license": "GPL-3.0",
+  "scripts": {
+    "ng": "npx ng",
+    "start": "npx ng serve",
+    "build": "npx ng build",
+    "build-embedded": "npx ng build --configuration=embedded --base-href /report/",
+    "watch": "npx ng build --watch --configuration development",
+    "test": "npx ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~13.1.0",
+    "@angular/cdk": "^13.1.3",
+    "@angular/common": "~13.1.0",
+    "@angular/compiler": "~13.1.0",
+    "@angular/core": "~13.1.0",
+    "@angular/forms": "~13.1.0",
+    "@angular/material": "^13.1.3",
+    "@angular/platform-browser": "~13.1.0",
+    "@angular/platform-browser-dynamic": "~13.1.0",
+    "@angular/router": "~13.1.0",
+    "@deck.gl/core": "^8.7.0",
+    "@deck.gl/layers": "^8.7.0",
+    "@luma.gl/constants": "^8.5.10",
+    "@luma.gl/core": "^8.5.10",
+    "@phylocanvas/phylocanvas.gl": "^1.39.0",
+    "rxjs": "~7.4.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^13.2.5",
+    "@angular/cli": "~13.1.4",
+    "@angular/compiler-cli": "~13.1.0",
+    "@types/jasmine": "~3.10.0",
+    "@types/node": "^12.11.1",
+    "jasmine-core": "~3.10.0",
+    "karma": "^6.3.17",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.1.0",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "typescript": "~4.5.2"
+  }
+}

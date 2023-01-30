@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <span>
+    <a id="title" routerLink="/">{{databaseName}}</a>
+  </span>
+  <span class="example-spacer"></span>
+  <div class="collapse navbar-collapse">
+    <input #toSearch id="search" (keyup.enter)="this.onFamilySearch(toSearch.value)" type="text" placeholder="Search"
+           class="search" [matAutocomplete]="auto" [formControl]="control">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let family of filteredFamilies | async" [value]="family">
+        {{family}}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</mat-toolbar>
+<mat-card>
+  <mat-card-content>
+    <router-outlet></router-outlet>
+  </mat-card-content>
+</mat-card>

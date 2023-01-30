@@ -1,0 +1,14 @@
+<h1 style="text-align:center;" mat-dialog-title>Choose Family</h1>
+<div mat-dialog-actions align="center">
+
+  <button (click)="onGoToFamily(firstValue)" mat-raised-button color="primary" aria-label="View analysis">
+    <mat-icon>visibility</mat-icon>
+    {{firstValue}}
+  </button>
+
+  <button (click)="onGoToFamily(secondValue)" mat-raised-button color="primary" aria-label="View analysis">
+    <mat-icon>visibility</mat-icon>
+    {{secondValue}}
+  </button>
+
+</div>

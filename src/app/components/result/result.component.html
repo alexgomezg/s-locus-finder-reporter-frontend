@@ -1,0 +1,142 @@
+<mat-card>
+  <mat-card-title>
+    {{id}}
+  </mat-card-title>
+  <mat-card-subtitle>
+    <a id="family-link" routerLink="/family/{{familyName}}">{{familyName}}</a>
+  </mat-card-subtitle>
+  <mat-card-content>
+    <span>Results:</span>
+    <select class="form-select" id="results" #result
+            (change)="onChangeResults(result.value)">
+      <ng-container *ngFor="let analysisName of speciesAnalysisNames">
+        <div *ngIf="analysisName === id; then thenBlock; else elseBlock"></div>
+        <ng-template #thenBlock>
+          <option selected>{{analysisName}}</option>
+        </ng-template>
+
+        <ng-template #elseBlock>
+          <option>{{analysisName}}</option>
+        </ng-template>
+      </ng-container>
+    </select>
+
+    <div>
+
+      <div *ngIf="speciesAnalysis?.predictedSkp1===null && speciesAnalysis?.predictedSkp1===null; then thenBlockSKP1 else elseBlockSKP1"></div>
+
+
+      <ng-template #thenBlockSKP1>
+        <br>
+        <mat-card-subtitle>
+         No SKP1 model
+        </mat-card-subtitle>
+      </ng-template>
+      <ng-template #elseBlockSKP1>
+        <br>
+        <mat-card-subtitle>
+
+          <div *ngIf="speciesAnalysis?.predictedSkp1TreePath===null; then thenBlockPredictedSKP1 else elseBlockPredictedSKP1"></div>
+
+          <ng-template #thenBlockPredictedSKP1>
+            SKP1 region count: {{speciesAnalysis?.predictedSkp1}} predicted /
+          </ng-template>
+            <ng-template #elseBlockPredictedSKP1>
+              SKP1 region count:
+              <a [href]="buildFileUrl(speciesAnalysis?.predictedSkp1TreePath!)" target="_blank">
+                {{speciesAnalysis?.predictedSkp1}} predicted </a> /
+            </ng-template>
+
+
+            <div *ngIf="speciesAnalysis?.putativeSkp1TreePath===null; then thenBlockPutativeSKP1 else elseBlockPutativeSKP1"></div>
+              <ng-template #thenBlockPutativeSKP1>
+                {{speciesAnalysis?.putativeSkp1}} putative
+              </ng-template>
+              <ng-template #elseBlockPutativeSKP1>
+                <a [href]="buildFileUrl(speciesAnalysis?.putativeSkp1TreePath!)" target="_blank">
+                  {{speciesAnalysis?.putativeSkp1}} putative</a>
+              </ng-template>
+
+        </mat-card-subtitle>
+      </ng-template>
+
+
+
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="predicted">
+          <th mat-header-cell *matHeaderCellDef>Predicted</th>
+          <td mat-cell *matCellDef="let analysis">
+            <mat-slide-toggle color="primary" [checked]="isChecked(analysis)"
+                              (toggleChange)="onToggleRow(analysis)"
+                              [disabled]="!analysis.hasBothAnalysis()">
+            </mat-slide-toggle>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="region">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Region</th>
+          <td mat-cell *matCellDef="let analysis">
+
+            <div *ngIf="analysis.getRegionPdfPath(isChecked(analysis))!==null; then thenBlockRegion else elseBlockRegion"></div>
+            <ng-template #thenBlockRegion>
+              <a [href]="buildFileUrl(analysis.getRegionPdfPath(isChecked(analysis)))" target="_blank">
+                {{analysis.regionName}}
+              </a>
+            </ng-template>
+            <ng-template #elseBlockRegion>{{analysis.regionName}}</ng-template>
+
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="model">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+          <td mat-cell *matCellDef="let analysis">
+
+            <div *ngIf="analysis.getModelFastaPath(isChecked(analysis))!==null; then thenBlockModel else elseBlockModel"></div>
+            <ng-template #thenBlockModel>
+              <a [href]="buildFileUrl(analysis.getModelFastaPath(isChecked(analysis)))" target="_blank">
+                {{analysis.modelName}}
+              </a>
+            </ng-template>
+            <ng-template #elseBlockModel>{{analysis.modelName}}</ng-template>
+
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="min_tree_distance">
+          <th mat-header-cell *matHeaderCellDef>Min. Tree Distance</th>
+          <td mat-cell *matCellDef="let analysis">
+            <ul>
+              <li *ngFor="let distance of analysis.getMinTreeDistance(isChecked(analysis))">
+                <a [href]="buildFileUrl(analysis.getPhylogenyTreePath(isChecked(analysis)))" target="_blank">
+                {{distance.region}}: {{distance.score}}
+                </a>
+              </li>
+            </ul>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="fbox">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fbox in the Region</th>
+          <td mat-cell *matCellDef="let analysis">{{analysis.getFboxInRegion(isChecked(analysis))}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isoelectric_point">
+          <th mat-header-cell *matHeaderCellDef>Isoelectric Point</th>
+          <td mat-cell *matCellDef="let analysis">
+            <ul>
+              <li *ngFor="let isoelectricPoint of analysis.getIsoelectricPoints(isChecked(analysis))">
+                {{isoelectricPoint}}
+              </li>
+            </ul>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </table>
+      <mat-paginator #paginator
+                     [pageSize]="8" [pageSizeOptions]="[5, 10, 20, 50]"
+                     [length]="dataSource.count$ | async">
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
